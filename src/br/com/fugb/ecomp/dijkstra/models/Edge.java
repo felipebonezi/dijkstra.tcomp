@@ -2,6 +2,8 @@ package br.com.fugb.ecomp.dijkstra.models;
 
 public class Edge {
 
+	private static final String DEFAULT_IDENTIFIER = "DIJKSTRA";
+
 	/**
 	 * Identificador da aresta.
 	 */
@@ -25,7 +27,7 @@ public class Edge {
 	private long weight;
 	
 	public Edge(Vertex initial, Vertex destination, long weight) {
-		this(String.valueOf(System.currentTimeMillis()), initial, destination, weight);
+		this(DEFAULT_IDENTIFIER, initial, destination, weight);
 	}
 	
 	public Edge(String identifier, Vertex initial, Vertex destination, long weight) {
