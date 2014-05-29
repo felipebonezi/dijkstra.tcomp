@@ -24,13 +24,13 @@ public class Edge {
 	 * Podemos considerar v‡rias unidades, mas neste exemplo
 	 * iremos utilizar o conceito de kilometros.
 	 */
-	private long weight;
+	private int weight;
 	
-	public Edge(Vertex initial, Vertex destination, long weight) {
+	public Edge(Vertex initial, Vertex destination, int weight) {
 		this(DEFAULT_IDENTIFIER, initial, destination, weight);
 	}
 	
-	public Edge(String identifier, Vertex initial, Vertex destination, long weight) {
+	public Edge(String identifier, Vertex initial, Vertex destination, int weight) {
 		this.identifier = identifier;
 		this.initial = initial;
 		this.destination = destination;
@@ -49,7 +49,7 @@ public class Edge {
 		return destination;
 	}
 
-	public long getWeight() {
+	public int getWeight() {
 		return weight;
 	}
 	
