@@ -65,7 +65,7 @@ public abstract class DijkstraAlgorithm {
 			for (Edge edge : graph.getEdges()) {
 				Vertex initial = edge.getInitial();
 				Vertex destination = edge.getDestination();
-				if (initial.equals(currentVertex) && notPassedVertex.contains(destination)) {
+				if (initial.equals(currentVertex) && !passedVertex.contains(destination)) {
 					vertexNeighborhood.add(destination);
 				}
 			}
