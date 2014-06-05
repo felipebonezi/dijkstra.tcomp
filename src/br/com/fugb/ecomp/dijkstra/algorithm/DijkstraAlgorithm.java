@@ -149,8 +149,8 @@ public abstract class DijkstraAlgorithm {
 					edgesPath.add(edge);
 					break;
 				}
-				vertexTo = vertexToVertex.get(vertexFrom);
 			}
+			vertexTo = vertexToVertex.get(vertexFrom);
 		} while (vertexTo != null);
 		
 		Collections.reverse(edgesPath);
