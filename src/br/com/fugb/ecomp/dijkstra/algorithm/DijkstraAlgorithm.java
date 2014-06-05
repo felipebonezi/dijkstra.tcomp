@@ -1,5 +1,6 @@
 package br.com.fugb.ecomp.dijkstra.algorithm;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,22 +19,36 @@ public abstract class DijkstraAlgorithm {
 	private static Set<Vertex> notPassedVertex;
 	private static Map<Vertex, Integer> previousDistances;
 	private static Map<Vertex, Vertex> vertexToVertex;
+	private static List<Edge> edgesPath;
 	
 	static {
 		passedVertex = new HashSet<Vertex>(25);
 		notPassedVertex = new HashSet<Vertex>(25);
 		previousDistances = new HashMap<Vertex, Integer>(25);
 		vertexToVertex = new HashMap<Vertex, Vertex>(25);
+		edgesPath = new ArrayList<Edge>(25);
 	}
 	
-	public static List<Vertex> calculate(Graph graph, Vertex source, Vertex destination) {
+	public static List<Vertex> calculateShortestVertex(Graph graph, Vertex source, Vertex destination) {
 		passedVertex.clear();
 		notPassedVertex.clear();
 		previousDistances.clear();
 		vertexToVertex.clear();
+		edgesPath.clear();
 		
 		calculateAllShortestsPaths(graph, source);
-		return fillShortestPath(source, destination);
+		return fillShortestVertexPath(source, destination);
+	}
+	
+	public static List<Edge> calculateShortestEdges(Graph graph, Vertex source, Vertex destination) {
+		passedVertex.clear();
+		notPassedVertex.clear();
+		previousDistances.clear();
+		vertexToVertex.clear();
+		edgesPath.clear();
+		
+		calculateAllShortestsPaths(graph, source);
+		return fillShortestEdgesPath(graph, source, destination);
 	}
 
 	private static void calculateAllShortestsPaths(Graph graph, Vertex source) {
@@ -79,19 +94,20 @@ public abstract class DijkstraAlgorithm {
 				if (currentDistance == null)
 					currentDistance = Integer.MAX_VALUE;
 				
-				Integer weight = null;
+				Edge choosenEdge = null;
 				for (Edge edge : graph.getEdges()) {
 					Vertex initial = edge.getInitial();
 					Vertex destination = edge.getDestination();
 					if (initial.equals(currentVertex) && destination.equals(vertex)) {
-						weight = edge.getWeight();
+						choosenEdge = edge;
 						break;
 					}
 				}
 				
-				if (weight == null)
+				if (choosenEdge == null)
 					throw new RuntimeException("ARRRRGH! :(");
 				
+				int weight = choosenEdge.getWeight();
 				if (vertexDistance > (currentDistance + weight)) {
 					previousDistances.put(vertex, (currentDistance + weight));
 					vertexToVertex.put(vertex, currentVertex);
@@ -101,7 +117,7 @@ public abstract class DijkstraAlgorithm {
 		} while(notPassedVertex.size() > 0);
 	}
 	
-	private static List<Vertex> fillShortestPath(Vertex source, Vertex destination) {
+	private static List<Vertex> fillShortestVertexPath(Vertex source, Vertex destination) {
 		Vertex vertex = vertexToVertex.get(destination);
 		if (vertex == null)
 			throw new RuntimeException("Holy shit, there's no path from " + source + " to " + destination);
@@ -116,6 +132,30 @@ public abstract class DijkstraAlgorithm {
 		Collections.reverse(shortestPath);
 		
 		return shortestPath;
+	}
+	
+	private static List<Edge> fillShortestEdgesPath(Graph graph, Vertex source, Vertex destination) {
+		Vertex vertexTo = vertexToVertex.get(destination);
+		Vertex vertexFrom = destination;
+		if (vertexTo == null)
+			throw new RuntimeException("Holy shit, there's no path from " + source + " to " + destination);
+		
+		do {
+			for (Edge edge : graph.getEdges()) {
+				Vertex from = edge.getInitial();
+				Vertex to = edge.getDestination();
+				if (from.equals(vertexTo) && to.equals(vertexFrom)) {
+					vertexFrom = from;
+					edgesPath.add(edge);
+					break;
+				}
+				vertexTo = vertexToVertex.get(vertexFrom);
+			}
+		} while (vertexTo != null);
+		
+		Collections.reverse(edgesPath);
+		
+		return edgesPath;
 	}
 	
 }

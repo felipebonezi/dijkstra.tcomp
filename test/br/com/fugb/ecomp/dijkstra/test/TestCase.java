@@ -144,9 +144,16 @@ public class TestCase {
         edges.add(edge35);
         
         Graph graph = new Graph(vertexs, edges);
-        List<Vertex> shortestPath = DijkstraAlgorithm.calculate(graph, vertex1, vertex8);
+        List<Vertex> shortestPath = DijkstraAlgorithm.calculateShortestVertex(graph, vertex1, vertex8);
         for (Vertex vertex : shortestPath) {
         	System.out.println(vertex);
+        }
+        
+        System.out.println("\n\n---\n\n");
+        
+        List<Edge> shortestEdgesPath = DijkstraAlgorithm.calculateShortestEdges(graph, vertex1, vertex8);
+        for (Edge edge : shortestEdgesPath) {
+        	System.out.println(edge);
         }
 	}
 
