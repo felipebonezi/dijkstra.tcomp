@@ -122,7 +122,7 @@ public abstract class DijkstraAlgorithm {
 		if (vertex == null)
 			throw new RuntimeException("Holy shit, there's no path from " + source + " to " + destination);
 		
-		List<Vertex> shortestPath = new LinkedList<Vertex>();
+		List<Vertex> shortestPath = new ArrayList<Vertex>();
 		shortestPath.add(destination);
 		do {
 			shortestPath.add(vertex);
